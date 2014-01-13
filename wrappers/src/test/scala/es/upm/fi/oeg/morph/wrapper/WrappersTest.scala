@@ -15,14 +15,15 @@ class WrappersTest extends JUnitSuite with ShouldMatchersForJUnit {
   val engineWM=actorSystem.actorOf(Props[DemoEngine],"EsperEngineWeatherMap")
   val engineCB=actorSystem.actorOf(Props[DemoEngine],"EsperEngineCitybikes")
      
-  @Test def randomWrapper:Unit={
-    new ApiWrapper("hl7",actorSystem)
-    
-    Thread.sleep(10000)
-  }
+//  @Test def randomWrapper:Unit={
+//    new ApiWrapper("hl7",actorSystem)
+//    
+//    Thread.sleep(10000)
+//  }
   
   @Test def csvWrapper:Unit={
     new ApiWrapper("social",actorSystem)
+    new ApiWrapper("hsl", actorSystem)
     Thread.sleep(15000)
   }      
 

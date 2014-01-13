@@ -18,6 +18,10 @@ class RestApiSource (who:PollWrapper,id:String) extends Datasource(who,id){
     case "json"=>svc:RequestBuilder=>
       val str=Http(svc OK as.String).apply
       extract(str)
+    // Text wrapper for HSL service
+//    case "txt"=>svc:RequestBuilder=>
+//      val str = Http(svc OK as.String).apply
+//      extract(str)
   }
   val idname=who.idkeys(id)
   
