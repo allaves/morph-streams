@@ -2,7 +2,7 @@ package es.upm.fi.oeg.siq.wrapper
 
 import java.util.Date
 import scala.io.Source
-import java.io
+import java.io._
 import dispatch._
 import com.ning.http.client.RequestBuilder
 import java.io.BufferedReader
@@ -25,10 +25,10 @@ class CsvSource(who:PollWrapper,id:String) extends Datasource(who,id){
 	    val svc = url(theurl)
 		val res = Http(svc OK as.String)
 		val data = res()
-		// The response is right, but the file is not created!
-		print(data)
-		data #> new java.io.File("data/hsl.csv")
-		theurl = "/data/hsl.csv"
+		val writer = new PrintWriter(new File("conf/data/hsl.csv"), "UTF-8")
+	    writer.write(data)
+	    writer.close()
+		theurl = "data/hsl.csv"
 	  }
 	  /*
 	   * 
@@ -52,11 +52,15 @@ class CsvSource(who:PollWrapper,id:String) extends Datasource(who,id){
   }
     
   def extract(string:String)={
+    printf("Line: %s", string)
     val array=string.split(';')
+    printf("Array: %s", array.toString())
     var i=0
     array.map{value=>
+      // Why did you increase the value of i before assigning the value?
+      //i+=1
+      fieldTypes(i)(value)
       i+=1
-      fieldTypes(i)(value)      
     }    
   }
 }
