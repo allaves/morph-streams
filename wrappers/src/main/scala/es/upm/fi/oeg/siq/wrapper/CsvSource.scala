@@ -25,6 +25,7 @@ class CsvSource(who:PollWrapper,id:String) extends Datasource(who,id){
 	    val svc = url(theurl)
 		val res = Http(svc OK as.String)
 		val data = res()
+		print(data)
 		val writer = new PrintWriter(new File("conf/data/hsl.csv"), "UTF-8")
 	    writer.write(data)
 	    writer.close()
@@ -48,19 +49,17 @@ class CsvSource(who:PollWrapper,id:String) extends Datasource(who,id){
     val res = data     
     res.map{data=>
       new Observation(date,Seq(idname)++data++funs.map(f=>f(id)))
-    }       
+    }   
   }
     
   def extract(string:String)={
-    printf("Line: %s", string)
-    val array=string.split(';')
-    printf("Array: %s", array.toString())
-    var i=0
+    printf("Line: %s\n", string)
+    val array=string.split(";", -1)
+    println(array.mkString(" "))
+    var i=1
     array.map{value=>
-      // Why did you increase the value of i before assigning the value?
       //i+=1
       fieldTypes(i)(value)
-      i+=1
     }    
   }
 }

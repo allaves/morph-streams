@@ -25,7 +25,8 @@ class ApiWrapper(systemid:String,override val actorSystem:ActorSystem) extends P
   val engine=actorSystem.actorFor(conf.getString("engineurl"))
   val outputstream=conf.getString("outputstream")
   override def postData(systemid:String,ts:Long,o:Observation):Unit={
-     engine ! Event(outputstream,(fieldNames zip o.serializable).toMap)   
+     engine ! Event(outputstream,(fieldNames zip o.serializable).toMap)
+     printf("Event sent: Values(%s), timestamp(%s)\n", o.values.toString(), ts.toString)
   }
 }
 
@@ -77,7 +78,8 @@ class ApiCaller (systemid:String,id:String,conf:Config) extends Actor{
     try{    
       val obs=pollData
       obs.foreach{o=>
-        engine ! Event(outputstream,o)   
+        engine ! Event(outputstream,o) 
+        printf("Event sent: %s", o.values.toString)
         /*val datetime= try o.timestamp//try df.parse(o.timestamp.toString())
         val c=Calendar.getInstance
         c.setTime(datetime)*/
